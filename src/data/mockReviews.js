@@ -1,0 +1,80 @@
+export const mockReviews = [
+  {
+    id: 1,
+    productId: 1,
+    productName: "AgrivaFoods Moringa Powder",
+    name: "Rahul Sharma",
+    location: "Pune, Maharashtra",
+    rating: 5,
+    title: "Remarkable purity and sustained energy",
+    comment: "Excellent quality Moringa powder! The deep emerald green color and fresh grassy aroma immediately show its purity. I feel notably more energetic throughout the workday since I started mixing this in my morning lukewarm water with lemon.",
+    date: "2 days ago",
+    verified: true,
+    helpfulCount: 24
+  },
+  {
+    id: 2,
+    productId: 2,
+    productName: "AgrivaFoods Beetroot Powder",
+    name: "Anjali Gupta",
+    location: "Bengaluru, Karnataka",
+    rating: 5,
+    title: "Best clean pre-workout I have tried",
+    comment: "Beetroot powder has become my indispensable pre-workout supplement. Absolutely zero synthetic chemicals, colors, or artificial sugars—just pure, clean stamina. Blends effortlessly into my pre-run smoothie and oatmeal!",
+    date: "5 days ago",
+    verified: true,
+    helpfulCount: 18
+  },
+  {
+    id: 3,
+    productId: 3,
+    productName: "AgrivaFoods Amla Powder",
+    name: "Dr. Sandeep Patil",
+    location: "Mumbai, Maharashtra",
+    rating: 5,
+    title: "Authentic Vitamin C powerhouse",
+    comment: "As a health consultant, I am meticulously selective with nutritional powders. AgrivaFoods' Amla powder demonstrates great natural potency. It has markedly supported hair strength and fortified daily immunity.",
+    date: "1 week ago",
+    verified: true,
+    helpfulCount: 31
+  },
+  {
+    id: 4,
+    productId: 1,
+    productName: "AgrivaFoods Moringa Powder",
+    name: "Pooja Deshmukh",
+    location: "Nagpur, Maharashtra",
+    rating: 5,
+    title: "Great taste and very fine texture",
+    comment: "The powder is milled so finely that it doesn't leave grainy sediment at the bottom of the cup. The ziplock pouch keeps it completely fresh. Truly premium Indian superfood brand!",
+    date: "2 weeks ago",
+    verified: true,
+    helpfulCount: 12
+  },
+  {
+    id: 5,
+    productId: 2,
+    productName: "AgrivaFoods Beetroot Powder",
+    name: "Vikram Singhania",
+    location: "Hyderabad, Telangana",
+    rating: 4,
+    title: "Rich natural color and sweet flavor",
+    comment: "Rich natural color and taste. Gives my breakfast smoothies a vibrant red look. Delivery was super fast via courier and packaging was pristine.",
+    date: "3 weeks ago",
+    verified: true,
+    helpfulCount: 9
+  },
+  {
+    id: 6,
+    productId: 3,
+    productName: "AgrivaFoods Amla Powder",
+    name: "Meera Nair",
+    location: "Kochi, Kerala",
+    rating: 5,
+    title: "Wonderful for hair care and morning detox",
+    comment: "I consume half a spoon with honey every dawn and also formulate a monthly amla hair mask with coconut oil. My hair texture feels significantly stronger and smoother.",
+    date: "1 month ago",
+    verified: true,
+    helpfulCount: 15
+  }
+];

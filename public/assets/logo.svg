@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" width="280" height="64" fill="none">
+  <!-- Botanical Emblem Icon -->
+  <g transform="translate(4, 6)">
+    <circle cx="26" cy="26" r="24" fill="#009447" fill-opacity="0.08" />
+    <circle cx="26" cy="26" r="21" stroke="#009447" stroke-width="1.6" stroke-dasharray="3 3" />
+    <!-- Leaf 1 -->
+    <path d="M 26 11 C 36 15 40 26 33 36 C 25 29 20 22 26 11 Z" fill="#009447" />
+    <!-- Leaf 2 -->
+    <path d="M 26 15 C 17 20 14 31 23 39 C 28 32 30 24 26 15 Z" fill="#78A603" />
+    <!-- Stem -->
+    <path d="M 26 22 Q 27 34 28 42" stroke="#184A35" stroke-width="2" stroke-linecap="round" />
+  </g>
+  <!-- Brand Text: AgrivaFoods -->
+  <text x="68" y="37" font-family="'DM Sans', 'Poppins', 'Inter', sans-serif" font-weight="900" font-size="26" fill="#184A35" letter-spacing="-0.5">
+    Agriva<tspan fill="#009447">Foods</tspan>
+  </text>
+  <!-- Brand Tagline -->
+  <text x="70" y="52" font-family="'DM Sans', 'Poppins', 'Inter', sans-serif" font-weight="800" font-size="8.5" fill="#5C7C6D" letter-spacing="2.8">
+    SUPERFOOD • NATURALLY BETTER
+  </text>
+</svg>
