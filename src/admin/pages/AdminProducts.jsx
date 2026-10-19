@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { adminApi } from '../../services/api';
+import { resolveMediaUrl } from '../../utils/mediaUtils';
 import {
   Package,
   Plus,
@@ -199,7 +200,7 @@ export const AdminProducts = () => {
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-3">
                           <img
-                            src={product.images?.[0] || '/assets/moringa-packaging.png'}
+                            src={resolveMediaUrl(product.images?.[0] || '/assets/moringa-packaging.png')}
                             alt={product.name}
                             className="w-12 h-12 rounded-xl object-contain bg-gray-50 border border-gray-100 flex-shrink-0"
                           />

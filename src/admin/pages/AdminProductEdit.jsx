@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { adminApi } from '../../services/api';
 import { ImageDropzone } from '../components/ImageDropzone';
+import { resolveMediaUrl } from '../../utils/mediaUtils';
 import {
   Package,
   Layers,
@@ -649,7 +650,7 @@ export const AdminProductEdit = () => {
                   <div className="col-span-2 sm:col-span-6 mt-2 pt-2 border-t border-gray-200/80 flex items-center gap-3">
                     <div className="w-9 h-9 bg-white border border-gray-200 rounded-lg p-0.5 flex items-center justify-center overflow-hidden flex-shrink-0">
                       {v.image ? (
-                        <img src={v.image} alt="Variant" className="max-h-full max-w-full object-contain" />
+                        <img src={resolveMediaUrl(v.image)} alt="Variant" className="max-h-full max-w-full object-contain" />
                       ) : (
                         <ImageIcon className="w-4 h-4 text-gray-300" />
                       )}
@@ -785,7 +786,7 @@ export const AdminProductEdit = () => {
                     <div className="grid grid-cols-3 gap-3 items-center">
                       <div className="aspect-square bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center overflow-hidden p-2">
                         {img ? (
-                          <img src={img} alt={`Preview ${i}`} className="max-h-full max-w-full object-contain" />
+                          <img src={resolveMediaUrl(img)} alt={`Preview ${i}`} className="max-h-full max-w-full object-contain" />
                         ) : (
                           <span className="text-[10px] text-gray-400 text-center flex flex-col items-center">
                             <ImageIcon className="w-5 h-5 mb-1 opacity-50" />

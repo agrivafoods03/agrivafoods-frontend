@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { mockReviews } from '../../data/mockReviews';
 import { productService } from '../../services/productService';
 import { ProductCard } from '../../components/product/ProductCard';
+import { resolveMediaUrl } from '../../utils/mediaUtils';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import {
@@ -111,7 +112,7 @@ export const ProductDetailsPage = () => {
     ((selectedVariant.originalPrice - selectedVariant.price) / selectedVariant.originalPrice) * 100
   );
 
-  const displayImage = selectedVariant.image || product.images[activeImageIndex] || product.images[0];
+  const displayImage = resolveMediaUrl(selectedVariant.image || product.images[activeImageIndex] || product.images[0]);
 
   const handleAddToCart = () => {
     if (isVariantOutOfStock) return;
@@ -179,7 +180,7 @@ export const ProductDetailsPage = () => {
                   }`}
                   aria-label={`View image ${idx + 1}`}
                 >
-                  <img src={img} alt={`Thumbnail ${idx + 1}`} className="max-h-full max-w-full object-contain" />
+                  <img src={resolveMediaUrl(img)} alt={`Thumbnail ${idx + 1}`} className="max-h-full max-w-full object-contain" />
                 </button>
               ))}
             </div>

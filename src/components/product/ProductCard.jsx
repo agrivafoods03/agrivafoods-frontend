@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { Star, Heart, ShoppingBag, Eye } from 'lucide-react';
+import { resolveMediaUrl } from '../../utils/mediaUtils';
 
 export const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
@@ -78,7 +79,7 @@ export const ProductCard = ({ product }) => {
         className="block aspect-square w-full bg-cream/30 p-4 sm:p-6 overflow-hidden flex items-center justify-center relative cursor-pointer"
       >
         <img
-          src={selectedVariant?.image || product.images?.[0] || '/assets/moringa-packaging.png'}
+          src={resolveMediaUrl(selectedVariant?.image || product.images?.[0] || '/assets/moringa-packaging.png')}
           alt={product.name}
           className="max-h-full max-w-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
