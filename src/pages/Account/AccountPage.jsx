@@ -467,7 +467,7 @@ export const AccountPage = ({ initialTab = 'profile' }) => {
                           value={newAddress.pinCode}
                           onChange={(e) => setNewAddress({ ...newAddress, pinCode: e.target.value })}
                           className="w-full px-3 py-2 bg-[#FBF7F3] border border-sage-light rounded-xl text-xs text-foreground focus:outline-none focus:border-primary"
-                          placeholder="411045"
+                          placeholder="e.g. 400001"
                           required
                         />
                       </div>

@@ -14,15 +14,15 @@ export const OrderSuccessPage = () => {
     paymentMethod: 'COD',
     paymentStatus: 'Pending',
     customer: {
-      fullName: 'Valued Customer',
-      email: 'customer@agrivafoods.com',
+      fullName: 'Customer',
+      email: 'order@agrivafoods.com',
       phone: '9876543210'
     },
     shippingAddress: {
-      address: 'Flat 402, Green View Residency, Baner',
+      address: 'Shipping Address on File',
       city: 'Pune',
       state: 'Maharashtra',
-      pinCode: '411045'
+      pinCode: '411001'
     },
     items: [
       {

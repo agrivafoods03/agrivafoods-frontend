@@ -122,7 +122,7 @@ export const LoginPage = () => {
           <button
             type="button"
             onClick={() => {
-              setEmail('nilesh@AgrivaFoods.com');
+              setEmail('demo@agrivafoods.com');
               setPassword('password123');
             }}
             className="text-xs font-bold text-primary hover:underline mt-1 block"

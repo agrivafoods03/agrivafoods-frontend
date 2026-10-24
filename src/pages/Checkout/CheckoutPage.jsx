@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
@@ -22,18 +22,39 @@ export const CheckoutPage = () => {
   const { showToast } = useToast();
   const navigate = useNavigate();
 
+  // For authenticated returning customers: populate from their saved default address if present
+  const savedAddress = user?.addresses?.find((a) => a.isDefault) || user?.addresses?.[0];
+
   const [formData, setFormData] = useState({
-    fullName: user?.name || 'Nilesh Gawade',
-    email: user?.email || 'customer@agrivafoods.com',
-    phone: user?.phone || '8830052087',
-    address: 'Flat 402, Green View Residency, Baner',
-    apartment: 'Near High Street',
-    city: 'Pune',
-    state: 'Maharashtra',
-    pinCode: '411045',
-    country: 'India',
+    fullName: user?.name || user?.fullName || '',
+    email: user?.email || '',
+    phone: user?.phone || savedAddress?.phone || '',
+    address: savedAddress?.address || savedAddress?.street || '',
+    apartment: savedAddress?.apartment || '',
+    city: savedAddress?.city || '',
+    state: savedAddress?.state || '',
+    pinCode: savedAddress?.pinCode || savedAddress?.pincode || '',
+    country: savedAddress?.country || 'India',
     paymentMethod: 'COD'
   });
+
+  // Sync details when authenticated user profile loads or changes
+  useEffect(() => {
+    if (user) {
+      const addr = user?.addresses?.find((a) => a.isDefault) || user?.addresses?.[0];
+      setFormData((prev) => ({
+        ...prev,
+        fullName: prev.fullName || user.name || user.fullName || '',
+        email: prev.email || user.email || '',
+        phone: prev.phone || user.phone || addr?.phone || '',
+        address: prev.address || addr?.address || addr?.street || '',
+        apartment: prev.apartment || addr?.apartment || '',
+        city: prev.city || addr?.city || '',
+        state: prev.state || addr?.state || '',
+        pinCode: prev.pinCode || addr?.pinCode || addr?.pincode || ''
+      }));
+    }
+  }, [user]);
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -162,7 +183,7 @@ export const CheckoutPage = () => {
                   className={`w-full px-3 sm:px-3.5 py-2 sm:py-2.5 bg-[#FBF7F3] border rounded-xl text-xs sm:text-sm text-foreground focus:outline-none ${
                     errors.fullName ? 'border-error' : 'border-sage-light focus:border-primary'
                   }`}
-                  placeholder="Nilesh Gawade"
+                  placeholder="e.g. Rahul Sharma"
                 />
                 {errors.fullName && <p className="text-[11px] text-error mt-1">{errors.fullName}</p>}
               </div>
@@ -179,7 +200,7 @@ export const CheckoutPage = () => {
                   className={`w-full px-3 sm:px-3.5 py-2 sm:py-2.5 bg-[#FBF7F3] border rounded-xl text-xs sm:text-sm text-foreground focus:outline-none ${
                     errors.email ? 'border-error' : 'border-sage-light focus:border-primary'
                   }`}
-                  placeholder="nilesh@example.com"
+                  placeholder="e.g. name@example.com"
                 />
                 {errors.email && <p className="text-[11px] text-error mt-1">{errors.email}</p>}
               </div>
@@ -205,9 +226,52 @@ export const CheckoutPage = () => {
 
           {/* 2. Shipping Address */}
           <div className="bg-white rounded-2xl p-4 sm:p-6 border border-sage-light shadow-premium space-y-4">
-            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider pb-2 border-b border-sage-light">
-              2. Shipping Address
-            </h2>
+            <div className="flex flex-wrap items-center justify-between pb-2 border-b border-sage-light gap-2">
+              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">
+                2. Shipping Address
+              </h2>
+              {user && (
+                <span className="text-[11px] text-primary font-semibold">
+                  Logged in as {user.name || user.email}
+                </span>
+              )}
+            </div>
+
+            {/* Saved Address Selector for Authenticated Customers */}
+            {user && Array.isArray(user.addresses) && user.addresses.length > 0 && (
+              <div className="p-3 bg-[#FBF7F3] rounded-xl border border-sage-light space-y-1.5 text-xs">
+                <label className="block text-[11px] font-bold text-primary-dark">
+                  Select From Saved Addresses:
+                </label>
+                <select
+                  onChange={(e) => {
+                    const selected = user.addresses.find((a) => (a._id || a.id) === e.target.value);
+                    if (selected) {
+                      setFormData((prev) => ({
+                        ...prev,
+                        fullName: selected.fullName || prev.fullName,
+                        phone: selected.phone || prev.phone,
+                        address: selected.address || selected.street || '',
+                        apartment: selected.apartment || '',
+                        city: selected.city || '',
+                        state: selected.state || '',
+                        pinCode: selected.pinCode || selected.pincode || '',
+                        country: selected.country || 'India'
+                      }));
+                    }
+                  }}
+                  className="w-full px-3 py-1.5 bg-white border border-sage-light rounded-lg text-xs text-foreground focus:outline-none focus:border-primary"
+                  defaultValue=""
+                >
+                  <option value="" disabled>-- Choose a saved delivery address --</option>
+                  {user.addresses.map((a, idx) => (
+                    <option key={a._id || a.id || idx} value={a._id || a.id}>
+                      {a.fullName ? `${a.fullName}: ` : ''}{a.address || a.street}, {a.city} {a.isDefault ? '(Default)' : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div className="sm:col-span-2">
@@ -222,7 +286,7 @@ export const CheckoutPage = () => {
                   className={`w-full px-3 sm:px-3.5 py-2 sm:py-2.5 bg-[#FBF7F3] border rounded-xl text-xs sm:text-sm text-foreground focus:outline-none ${
                     errors.address ? 'border-error' : 'border-sage-light focus:border-primary'
                   }`}
-                  placeholder="Flat 402, Green View Residency, Baner"
+                  placeholder="House / Flat No., Building, Street Name"
                 />
                 {errors.address && <p className="text-[11px] text-error mt-1">{errors.address}</p>}
               </div>
@@ -237,7 +301,7 @@ export const CheckoutPage = () => {
                   value={formData.apartment}
                   onChange={handleChange}
                   className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 bg-[#FBF7F3] border border-sage-light rounded-xl text-xs sm:text-sm text-foreground focus:outline-none focus:border-primary"
-                  placeholder="Near High Street"
+                  placeholder="Apartment, Landmark, Area (optional)"
                 />
               </div>
 
@@ -253,7 +317,7 @@ export const CheckoutPage = () => {
                   className={`w-full px-3 sm:px-3.5 py-2 sm:py-2.5 bg-[#FBF7F3] border rounded-xl text-xs sm:text-sm text-foreground focus:outline-none ${
                     errors.city ? 'border-error' : 'border-sage-light focus:border-primary'
                   }`}
-                  placeholder="Pune"
+                  placeholder="Enter City"
                 />
                 {errors.city && <p className="text-[11px] text-error mt-1">{errors.city}</p>}
               </div>
@@ -270,7 +334,7 @@ export const CheckoutPage = () => {
                   className={`w-full px-3 sm:px-3.5 py-2 sm:py-2.5 bg-[#FBF7F3] border rounded-xl text-xs sm:text-sm text-foreground focus:outline-none ${
                     errors.state ? 'border-error' : 'border-sage-light focus:border-primary'
                   }`}
-                  placeholder="Maharashtra"
+                  placeholder="Enter State"
                 />
                 {errors.state && <p className="text-[11px] text-error mt-1">{errors.state}</p>}
               </div>
@@ -287,7 +351,7 @@ export const CheckoutPage = () => {
                   className={`w-full px-3 sm:px-3.5 py-2 sm:py-2.5 bg-[#FBF7F3] border rounded-xl text-xs sm:text-sm text-foreground focus:outline-none ${
                     errors.pinCode ? 'border-error' : 'border-sage-light focus:border-primary'
                   }`}
-                  placeholder="411045"
+                  placeholder="6-digit PIN code"
                 />
                 {errors.pinCode && <p className="text-[11px] text-error mt-1">{errors.pinCode}</p>}
               </div>

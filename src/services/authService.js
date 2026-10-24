@@ -14,7 +14,15 @@ export const authService = {
   getCurrentUser() {
     try {
       const user = localStorage.getItem(CURRENT_USER_KEY);
-      return user ? JSON.parse(user) : null;
+      if (!user) return null;
+      const parsed = JSON.parse(user);
+      // Cleanse any legacy mock address from previously stored demo user
+      if (parsed && Array.isArray(parsed.addresses)) {
+        parsed.addresses = parsed.addresses.filter(
+          (a) => a.id !== 'addr_default' && a.address !== 'Flat 402, Green View Residency, Baner'
+        );
+      }
+      return parsed;
     } catch {
       return null;
     }
@@ -34,7 +42,7 @@ export const authService = {
             id: matched.id,
             name: matched.name,
             email: matched.email,
-            phone: matched.phone || '8830052087',
+            phone: matched.phone || '',
             addresses: matched.addresses || []
           };
           localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(sessionUser));
@@ -48,20 +56,8 @@ export const authService = {
             id: 'usr_' + Date.now(),
             name: email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
             email: email,
-            phone: '8830052087',
-            addresses: [
-              {
-                id: 'addr_default',
-                fullName: 'Nilesh Gawade',
-                address: 'Flat 402, Green View Residency, Baner',
-                apartment: 'Near High Street',
-                city: 'Pune',
-                state: 'Maharashtra',
-                pinCode: '411045',
-                phone: '8830052087',
-                isDefault: true
-              }
-            ]
+            phone: '',
+            addresses: []
           };
           localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(demoUser));
           resolve(demoUser);

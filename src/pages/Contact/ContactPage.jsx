@@ -153,7 +153,7 @@ export const ContactPage = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Nilesh Gawade"
+                    placeholder="Enter your name"
                     className="w-full px-3.5 py-2.5 bg-[#FBF7F3] border border-sage-light rounded-xl text-xs text-foreground focus:outline-none focus:border-primary"
                     required
                   />
@@ -167,7 +167,7 @@ export const ContactPage = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="nilesh@example.com"
+                    placeholder="e.g. name@example.com"
                     className="w-full px-3.5 py-2.5 bg-[#FBF7F3] border border-sage-light rounded-xl text-xs text-foreground focus:outline-none focus:border-primary"
                     required
                   />
@@ -184,7 +184,7 @@ export const ContactPage = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="8830052087"
+                    placeholder="10-digit mobile number"
                     className="w-full px-3.5 py-2.5 bg-[#FBF7F3] border border-sage-light rounded-xl text-xs text-foreground focus:outline-none focus:border-primary"
                   />
                 </div>

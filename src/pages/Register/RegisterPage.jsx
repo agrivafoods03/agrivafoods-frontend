@@ -90,7 +90,7 @@ export const RegisterPage = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="e.g. Nilesh Gawade"
+                placeholder="e.g. Rahul Sharma"
                 className="w-full pl-10 pr-4 py-2.5 bg-[#FBF7F3] border border-sage-light rounded-xl text-xs sm:text-sm text-foreground focus:outline-none focus:border-primary"
                 required
               />
@@ -108,7 +108,7 @@ export const RegisterPage = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="nilesh@example.com"
+                placeholder="e.g. rahul@example.com"
                 className="w-full pl-10 pr-4 py-2.5 bg-[#FBF7F3] border border-sage-light rounded-xl text-xs sm:text-sm text-foreground focus:outline-none focus:border-primary"
                 required
               />
@@ -126,7 +126,7 @@ export const RegisterPage = () => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                placeholder="8830052087"
+                placeholder="10-digit mobile number"
                 className="w-full pl-10 pr-4 py-2.5 bg-[#FBF7F3] border border-sage-light rounded-xl text-xs sm:text-sm text-foreground focus:outline-none focus:border-primary"
               />
             </div>

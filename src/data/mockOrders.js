@@ -6,12 +6,12 @@ export const mockOrders = [
     paymentMethod: "UPI (Google Pay)",
     trackingNumber: "DTDC-99281745",
     shippingAddress: {
-      fullName: "Nilesh Gawade",
-      address: "Flat 402, Green View Residency, Baner",
+      fullName: "Sample Customer",
+      address: "12 Nature Valley, MG Road",
       city: "Pune",
       state: "Maharashtra",
-      pinCode: "411045",
-      phone: "8830052087"
+      pinCode: "411001",
+      phone: "9876543210"
     },
     items: [
       {
