@@ -106,6 +106,12 @@ export const adminApi = {
   login: (email, password) => api.request('/admin/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) }),
   logout: () => api.request('/admin/auth/logout', { method: 'POST' }),
   getMe: () => api.request('/admin/auth/me'),
+  forgotPassword: (email) => api.request('/admin/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email }) }),
+  verifyOtp: (email, otp) => api.request('/admin/auth/verify-otp', { method: 'POST', body: JSON.stringify({ email, otp }) }),
+  resetPassword: (email, resetToken, newPassword, confirmPassword) => api.request('/admin/auth/reset-password', {
+    method: 'POST',
+    body: JSON.stringify({ email, resetToken, newPassword, confirmPassword })
+  }),
 
   // Dashboard Overview
   getDashboardStats: () => api.request('/admin/dashboard'),
