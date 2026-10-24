@@ -61,6 +61,26 @@ export const AdminOrders = () => {
     }
   };
 
+  const handleRecordPaymentCollected = async () => {
+    if (!activeOrder) return;
+    setUpdating(true);
+    try {
+      const id = activeOrder._id || activeOrder.id;
+      await adminApi.updateOrderStatus(id, {
+        paymentStatus: 'Completed'
+      });
+      setMsg(`Payment for Order #${activeOrder.orderNumber} recorded as Collected!`);
+      setActiveOrder(prev => ({ ...prev, paymentStatus: 'Completed', paidAt: new Date().toISOString() }));
+      setNewPaymentStatus('Completed');
+      await fetchOrders();
+      setTimeout(() => setMsg(''), 4000);
+    } catch (err) {
+      alert(err.message || 'Failed to record payment');
+    } finally {
+      setUpdating(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -144,15 +164,21 @@ export const AdminOrders = () => {
                       </td>
                       <td className="py-3 px-3 font-bold text-[#18382A]">₹{order.total}</td>
                       <td className="py-3 px-3">
-                        <span className="capitalize text-gray-700 font-medium">{order.paymentMethod || 'Razorpay'}</span>
-                        <div className={`text-[10px] font-bold ${
+                        <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
+                          order.paymentMethod === 'COD'
+                            ? 'bg-amber-100 text-amber-900 border border-amber-200'
+                            : 'bg-gray-100 text-gray-700'
+                        }`}>
+                          {order.paymentMethod === 'COD' ? 'Cash on Delivery (COD)' : (order.paymentMethod || 'Razorpay')}
+                        </span>
+                        <div className={`text-[10px] font-bold mt-0.5 ${
                           order.paymentStatus?.toLowerCase() === 'completed' || order.paymentStatus?.toLowerCase() === 'paid'
                             ? 'text-emerald-600'
                             : order.paymentStatus?.toLowerCase() === 'failed'
                             ? 'text-red-600'
                             : 'text-amber-600'
                         }`}>
-                          {order.paymentStatus || 'Pending'}
+                          {order.paymentStatus === 'Pending' ? 'Pending (Pay on Delivery)' : (order.paymentStatus || 'Pending')}
                         </div>
                       </td>
                       <td className="py-3 px-3">
@@ -209,11 +235,15 @@ export const AdminOrders = () => {
               </div>
             </div>
 
-            {/* Razorpay & Payment Gateway Verification */}
-            <div className="bg-emerald-50/60 p-3.5 rounded-xl border border-emerald-100 text-xs space-y-1.5">
+            {/* Payment Information & Verification */}
+            <div className="bg-emerald-50/60 p-3.5 rounded-xl border border-emerald-100 text-xs space-y-2">
               <div className="flex justify-between items-center">
                 <span className="font-bold text-[#18382A]">Payment Method:</span>
-                <span className="font-semibold text-gray-800 uppercase">{activeOrder.paymentMethod || 'Razorpay'}</span>
+                <span className={`px-2 py-0.5 rounded-md font-bold uppercase ${
+                  activeOrder.paymentMethod === 'COD' ? 'bg-amber-100 text-amber-900 border border-amber-200' : 'bg-gray-100 text-gray-800'
+                }`}>
+                  {activeOrder.paymentMethod === 'COD' ? 'Cash on Delivery (COD)' : (activeOrder.paymentMethod || 'Razorpay')}
+                </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="font-bold text-[#18382A]">Payment Status:</span>
@@ -224,9 +254,35 @@ export const AdminOrders = () => {
                     ? 'bg-red-100 text-red-800'
                     : 'bg-amber-100 text-amber-800'
                 }`}>
-                  {activeOrder.paymentStatus || 'Pending'}
+                  {activeOrder.paymentStatus === 'Pending' ? 'Pending (Pay on Delivery)' : (activeOrder.paymentStatus || 'Pending')}
                 </span>
               </div>
+
+              {activeOrder.paymentMethod === 'COD' && (
+                <div className="p-2 bg-amber-50/90 rounded-lg border border-amber-200/70 text-[11px] text-amber-900 space-y-1">
+                  <div className="flex items-center gap-1.5 font-semibold">
+                    <AlertCircle className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+                    <span>Doorstep COD Collection</span>
+                  </div>
+                  <p className="text-amber-800 pl-5">
+                    Collect <strong>₹{activeOrder.total}</strong> via cash or courier UPI QR code upon doorstep handover.
+                  </p>
+                </div>
+              )}
+
+              {/* One-click COD payment recording */}
+              {activeOrder.paymentMethod === 'COD' && activeOrder.paymentStatus?.toLowerCase() !== 'completed' && activeOrder.paymentStatus?.toLowerCase() !== 'paid' && (
+                <button
+                  type="button"
+                  disabled={updating}
+                  onClick={handleRecordPaymentCollected}
+                  className="w-full mt-1 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm transition disabled:opacity-50"
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Record Payment as Collected (₹{activeOrder.total})</span>
+                </button>
+              )}
+
               {activeOrder.razorpayOrderId && (
                 <div className="flex justify-between items-center">
                   <span className="text-gray-500 text-[11px]">Razorpay Order ID:</span>
@@ -241,8 +297,8 @@ export const AdminOrders = () => {
               )}
               {activeOrder.paidAt && (
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-500 text-[11px]">Paid At:</span>
-                  <span className="text-[11px] text-gray-700">{new Date(activeOrder.paidAt).toLocaleString()}</span>
+                  <span className="text-gray-500 text-[11px]">Paid / Collected At:</span>
+                  <span className="text-[11px] text-emerald-800 font-semibold">{new Date(activeOrder.paidAt).toLocaleString()}</span>
                 </div>
               )}
               {activeOrder.paymentFailureReason && (

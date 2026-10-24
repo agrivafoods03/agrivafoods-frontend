@@ -23,25 +23,20 @@ export const orderService = {
     }
   },
 
-  async createRazorpayOrder(orderPayload) {
-    const res = await publicApi.createPaymentOrder(orderPayload);
-    return res.data;
+  async createRazorpayOrder() {
+    throw new Error('Online payments are temporarily disabled. AgrivaFoods accepts Cash on Delivery (COD) only.');
   },
 
-  async verifyPayment(verificationPayload) {
-    const res = await publicApi.verifyPayment(verificationPayload);
-    if (res?.data) {
-      this.savePlacedOrder(res.data);
-    }
-    return res.data;
+  async verifyPayment() {
+    throw new Error('Online payment verification is disabled in Cash on Delivery mode.');
   },
 
   async createOrder(orderPayload) {
-    const res = await publicApi.createPaymentOrder({
+    const res = await publicApi.placeOrder({
       ...orderPayload,
-      paymentMethod: orderPayload.paymentMethod || 'COD'
+      paymentMethod: 'COD'
     });
-    const savedOrder = res?.data?.order || res?.data;
+    const savedOrder = res?.data?.order || res?.data || res;
     if (savedOrder) {
       this.savePlacedOrder(savedOrder);
     }

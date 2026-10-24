@@ -277,11 +277,11 @@ export const AdminSettings = () => {
             </div>
             <div className="flex items-center gap-2 bg-gray-50/70 p-2 rounded-lg">
               <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-              <span><strong>Payment Verified:</strong> Razorpay ID & status update</span>
+              <span><strong>Payment Status:</strong> COD collection & status update</span>
             </div>
             <div className="flex items-center gap-2 bg-gray-50/70 p-2 rounded-lg">
-              <span className="w-2 h-2 rounded-full bg-red-500 shrink-0"></span>
-              <span><strong>Payment Failed:</strong> Failure reason & order ref</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+              <span><strong>Order Fulfillment:</strong> Courier tracking & status updates</span>
             </div>
             <div className="flex items-center gap-2 bg-gray-50/70 p-2 rounded-lg">
               <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
