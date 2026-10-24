@@ -22,7 +22,7 @@ class ApiClient {
     };
 
     // Auto-attach admin token if calling admin endpoints
-    if (endpoint.startsWith('/admin') || options.requiresAdmin) {
+    if (endpoint?.startsWith('/admin') || options?.requiresAdmin) {
       const token = this.getAdminToken();
       if (token) headers['Authorization'] = `Bearer ${token}`;
     } else {
