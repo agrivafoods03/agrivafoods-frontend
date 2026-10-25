@@ -64,10 +64,30 @@ class ApiClient {
       body: formData
     });
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'File upload failed');
+    let data = null;
+    try {
+      data = await response.json();
+    } catch (_) {
+      // Body is not JSON (e.g. Nginx 413, 502, 504 HTML error page)
     }
+
+    if (!response.ok) {
+      if (response.status === 413) {
+        throw new Error('Image file is too large for the server. Maximum allowed upload size is 25MB.');
+      }
+      if (response.status === 502 || response.status === 504) {
+        throw new Error('Server gateway error (502/504). Please ensure the backend server is running.');
+      }
+      if (response.status === 401 || response.status === 403) {
+        throw new Error('Session expired or unauthorized. Please log in again as administrator.');
+      }
+      throw new Error(data?.message || data?.error || `Upload failed with status ${response.status}`);
+    }
+
+    if (!data) {
+      throw new Error('Server returned an empty or invalid response.');
+    }
+
     return data;
   }
 }

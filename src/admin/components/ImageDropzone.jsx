@@ -15,7 +15,7 @@ export const ImageDropzone = ({
   onUploadSuccess,
   multiple = false,
   label = 'Drag and drop image here, or browse',
-  sublabel = 'Supports JPG, PNG, WebP, SVG up to 5MB',
+  sublabel = 'Supports JPG, PNG, WebP, SVG up to 25MB',
   compact = false,
   allowLibrarySelect = true,
   currentValue = ''
@@ -65,7 +65,7 @@ export const ImageDropzone = ({
 
     // Validate files
     const validFiles = [];
-    const maxSizeBytes = 5 * 1024 * 1024; // 5MB
+    const maxSizeBytes = 25 * 1024 * 1024; // 25MB
     const validMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
 
     for (let i = 0; i < files.length; i++) {
@@ -75,7 +75,7 @@ export const ImageDropzone = ({
         return;
       }
       if (file.size > maxSizeBytes) {
-        setErrorMsg(`"${file.name}" exceeds 5MB size limit.`);
+        setErrorMsg(`"${file.name}" exceeds 25MB size limit.`);
         return;
       }
       validFiles.push(file);
